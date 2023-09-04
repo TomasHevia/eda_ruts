@@ -83,6 +83,7 @@ int main(int nargs, char** args){
 		method = "quickSort";
 	}
 	else if (args[2] == I){
+		std::cout << "entro a insertionSort" << std::endl;
 		sort::insertionSort(A, n);
 		method = "insertionSort";
 	}

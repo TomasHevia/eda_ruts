@@ -5,6 +5,7 @@
 namespace sort{
 	void insertionSort(float* A, int n){
 		for(int i=1; i<n; i++){
+			
 			int elem = A[i];
 			int j = i-1;
 			while(j>=0 && elem < A[j]){
@@ -142,6 +143,7 @@ namespace sort{
 			countSort(A, n, exp);
 		}
 	}
+
 	int getMax(float* A, int n){
 		int max = A[0];
 		for (int i = 1; i < n; i++){
@@ -151,30 +153,25 @@ namespace sort{
 		}
 		return max;
 	}
+
 	void countSort(float* A, int n, int exp){
 		float* output = new float[n];
 		int i, count[10] = { 0 };
-
 		for (i = 0; i < n; i++){
 			count[(int)(A[i] / exp) % 10]++;
 		}
-
 		for (i = 1; i < 10; i++){
 			count[i] += count[i - 1];
 		}
-
 		for (i = n - 1; i >= 0; i--){
 			output[count[(int)(A[i] / exp) % 10] - 1] = A[i];
 			count[(int)(A[i] / exp) % 10]--;
 		}
-
 		for (i = 0; i < n; i++){
 			A[i] = output[i];
 		}
 		delete[] output;
-	}
+	}		
+
 
 }
-
-
-
