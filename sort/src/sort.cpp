@@ -57,7 +57,6 @@ namespace sort{
 	}
 
 	void quickSort(float* A, int i, int j){
-		std::cout << i << " " << j << std::endl;
 		if (i < j){
 			int k = split_qs(A, i, j);
 			quickSort(A, i, k-1);
