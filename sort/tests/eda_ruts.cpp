@@ -17,27 +17,32 @@ long getElapsedTime(std::chrono::time_point<std::chrono::high_resolution_clock> 
 float getArrayFromtxt(float* A, int n, std::string filename){
 	std::ifstream file(filename);
 	if (file.is_open()){
-		for (int i = 0; i < n; i++){
-			file >> A[i];
+		
+		std::string line;
+		int i = 0;
+		while (getline(file, line)){
+			std::istringstream iss(line);
+			float a;
+			if (!(iss >> a)){
+				std::cout << "error leyendo archivo" << std::endl;
+				break;
+			}
+			A[i] = a;
+			i++;
+
 		}
 		file.close();
 	}
 	return *A;
 }
 
-int extractIntFromString(std::string str){
-	std::stringstream ss;
-	ss << str;
-	std::string temp;
-	int found;
-	while (!ss.eof()){
-		ss >> temp;
-		if (std::stringstream(temp) >> found){
-			return found;
-		}
-		temp = "";
+int extractIntFromString(std::string& str){
+	size_t pos = str.find_first_of("0123456789");
+	if(pos != std::string::npos){
+		std::string number = str.substr(pos);
+		int result = std::stoi(number);
+		return result;
 	}
-	return -1;
 }
 
 void getTxtFromArray(float* A, int n, std::string filename){
@@ -57,16 +62,19 @@ int main(int nargs, char** args){
 	// ./eda_ruts <filename> <method>
     std::string fileroute = "../datos/";
     std::string filename = fileroute + args[1];
-	int n = extractIntFromString(args[2]);
-	float* A = nullptr;
+	std::string file;
+	file = args[1];
+	int n = extractIntFromString(file);
+	float* A;
+	A = new float[n];
     getArrayFromtxt(A, n, filename);
-
 	std::string Q = "Q";
 	std::string I = "I";
 	std::string M = "M";
 	std::string R = "R";
 	
 	std::string method;
+	std::cout << "metodo: " << args[2] << std::endl;
 
 	auto start = std::chrono::high_resolution_clock::now();
 
@@ -85,6 +93,7 @@ int main(int nargs, char** args){
 		method = "mergeSort";
 	}
 	else if (args[2] == R){
+		std::cout << "entro a radixSort" << std::endl;
 		sort::radixSort(A, n);
 		method = "radixSort";
 	}
@@ -92,6 +101,7 @@ int main(int nargs, char** args){
 	auto end = std::chrono::high_resolution_clock::now();
 	std::cout << "ordenado con: " << method << std::endl;
 	long elapsed =  getElapsedTime(start, end);
+	std::cout << "tiempo: " << elapsed << std::endl;
 	getTxtFromArray(A, n, filename);
 	sort::deleteArray(A);
 	std::cout << " [" << n << "," << elapsed << "]" << std::endl;

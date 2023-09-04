@@ -32,10 +32,7 @@ namespace sort{
 	}
 
 	int split_qs(float* A, int i, int j){
-		/***
-		 * split for quicksort
-		 * i,j are the endpoints
-		 */
+		
 		int p = getRandomInt(i, j);
 
 		while (i  < j) {
@@ -43,7 +40,6 @@ namespace sort{
 			while ( i < p && A[i] <= A[p]){
 				i = i + 1;
 			}
-
 			while ( j > p && A[j] >= A[p]){
 				j = j - 1;
 			}
@@ -61,6 +57,7 @@ namespace sort{
 	}
 
 	void quickSort(float* A, int i, int j){
+		std::cout << i << " " << j << std::endl;
 		if (i < j){
 			int k = split_qs(A, i, j);
 			quickSort(A, i, k-1);
@@ -91,48 +88,55 @@ namespace sort{
 		return k_smallest(A, 0, n-1, k);
 	}
 
-	void merge(float* A, int i, int j, int k){ // Sacado del pseudocodigo del libro del profesor
-		int n1 = j - i + 1;
-		float* Aaux = new float[n1];
-		int q = 1;
-		int p1 = i;
-		int p2 = k + 1;
-		while (p1 <= k && p2 <= j){
-			if (A[p1] <= A[p2]){
-				Aaux[q] = A[p1];
-				p1++;
+	void mergeSort(float* A, int i, int j){
+		if (i < j){
+			int m = (i + j) / 2;
+			mergeSort(A, i, m);
+			mergeSort(A, m + 1, j);
+			merge(A, i, m, j);
+		}
+	}
+
+	void merge(float* A, int i, int m, int j){
+		int n1 = m - i + 1;
+		int n2 = j - m;
+		float* L = new float[n1];
+		float* R = new float[n2];
+		for (int x = 0; x < n1; x++){
+			L[x] = A[i + x];
+		}
+		for (int y = 0; y < n2; y++){
+			R[y] = A[m + 1 + y];
+		}
+		int x = 0;
+		int y = 0;
+		int k = i;
+		while (x < n1 && y < n2){
+			if (L[x] <= R[y]){
+				A[k] = L[x];
+				x++;
 			}
 			else{
-				Aaux[q] = A[p2];
-				p2++;
+				A[k] = R[y];
+				y++;
 			}
-			q++;
+			k++;
 		}
-		while (p1 <= k){
-			Aaux[q] = A[p1];
-			p1++;
-			q++;
+		while (x < n1){
+			A[k] = L[x];
+			x++;
+			k++;
 		}
-		while (p2 <= j){
-			Aaux[q] = A[p2];
-			p2++;
-			q++;
+		while (y < n2){
+			A[k] = R[y];
+			y++;
+			k++;
 		}
-		for (int q = 1; q < n1; q++){
-			A[i + q] = Aaux[q];
-		}
-		delete[] Aaux;
+		delete[] L;
+		delete[] R;
 	}
 
-	void mergeSort(float* A, int i, int j){
-		int k = (i + j) / 2;
-		if (i < j){
-			mergeSort(A, i, k);
-			mergeSort(A, k + 1, j);
-			merge(A, i, j, k);
-		}
-
-	}
+	
 	void radixSort(float* A, int n){
 		int max = getMax(A, n);
 		for (int exp = 1; max / exp > 0; exp *= 10){
