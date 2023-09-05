@@ -9,7 +9,7 @@
 ## Running
 - ./eda_ruts <archivoAOrdenar> <metodo>
 - sea archivo a ordenar un archivo exe de la forma ruts_xxx.txt donde xxx es el numero de ruts que tiene el archivo
-- estos archivos se encuentran en la carpeta datos, dentro de la carpeta sort
+- para que el programa funcione los archivos tinen que estar en la carpeta datos dentro de sort
 - sea metodo una letra en mayuscula dependiendo del metodo que se desea usar
 
 Q - quickSort
