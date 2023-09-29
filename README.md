@@ -12,9 +12,9 @@
 - para que el programa funcione los archivos tinen que estar en la carpeta datos dentro de sort
 - sea metodo una letra en mayuscula dependiendo del metodo que se desea usar
 
-Q - quickSort
-R - radixSort
-M - mergeSort
-I - insertionSort
+- Q - quickSort
+- R - radixSort
+- M - mergeSort
+- I - insertionSort
 
 
