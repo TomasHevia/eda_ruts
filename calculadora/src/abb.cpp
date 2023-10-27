@@ -76,7 +76,19 @@ ABBNode* ABB::find(int val){
 void ABB::traverse_rec(ABBNode* node, int level){
 	if (node != nullptr){
 		std::cout << std::string(level*2, '-');
-		std::cout << node->getData() << " | s = " << node->getSize() << std::endl;
+		if (node->getData() == 43){
+			std::cout << " + " << std::endl;
+		}else if (node->getData() == 45){
+			std::cout << " - " << std::endl;
+		}else if (node->getData() == 42){
+			std::cout << " * " << std::endl;
+		}else if (node->getData() == 47){
+			std::cout << " / " << std::endl;
+		}else if (node->getData() == 94){
+			std::cout << " ^ " << std::endl;
+		}else{
+			std::cout << node->getData() << std::endl;
+		}
 		traverse_rec(node->getLeft(), level + 1);
 		traverse_rec(node->getRight(), level + 1);
 	}
@@ -151,39 +163,40 @@ ABBNode* ABB::k_element(int k){
 ABB::~ABB() {
 	delete root;
 }
-void ABB::createPostfixTree(std::string s){
-	std::stack<ABBNode*> st;
+void ABB::createPostfixTree(std::string s) {
+    std::stack<ABBNode*> st;
 
-	for (int i = 0; i < s.length(); i++){
-		char c = s[i];
-		if (isalpha(c)){
-			ABBNode* node = new ABBNode(c);
+    for (int i = 0; i < s.length(); i++) {
+        char c = s[i];
+        if (isalpha(c)) {
+            ABBNode* node = new ABBNode(c);
+            st.push(node);
+        }
+        else if (isdigit(c)) {
+            ABBNode* node = new ABBNode(c - '0');
 			st.push(node);
-		}else if(isdigit(c)){
-			std::string num;
-			while(isdigit(c)){
-				num += c;
-				i++;
-				c = s[i];
-			}
-			i--;
-			ABBNode* node = new ABBNode(std::stoi(num));
-			st.push(node);
-		}else if(c == '+' || c == '-' || c == '*' || c == '/' || c == '^'){
-			if(st.size() < 2){
-				std::cout << "Error: invalid expression" << std::endl;
-				return;
-			}
-			ABBNode* node = new ABBNode(c);
-			node->setRight(st.top());
-			st.pop();
-			node->setLeft(st.top());
-			st.pop();
-			st.push(node);
-		}
+        }
+        else if (c == '+' || c == '-' || c == '*' || c == '/' || c == '^') {
+            if (st.size() < 2) {
+                std::cout << "Error: invalid expression" << std::endl;
+                return;
+            }
+            ABBNode* node = new ABBNode(c);
+            node->setRight(st.top());
+            st.pop();
+            node->setLeft(st.top());
+            st.pop();
+            st.push(node);
+        }
+    }
 
-
-	}
+    if (st.size() == 1) {
+        root = st.top(); // La raíz del árbol es el único nodo en la pila
+    }
+    else {
+        std::cout << "Error: invalid expression" << std::endl;
+    }
 }
+
 
 } /* namespace trees */

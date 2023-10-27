@@ -5,6 +5,7 @@
 using namespace std;
 
 map<string, int> variables;
+string last_postfix;
 
 int prec(char c) {
     if (c == '^')
@@ -104,7 +105,7 @@ std::string infixToPostfix(string s) {
 int main() {
     cout << "Calculadora" << endl;
     while (true) {
-		string last_postfix;
+		
         cout << "$ ";
         string input;
         getline(cin, input);
@@ -121,8 +122,8 @@ int main() {
 			}
 			else {
 				string postfix = infixToPostfix(input);
+				last_postfix = postfix;
 				if (!postfix.empty()) {
-					last_postfix = postfix;
 					int result = calculatePostfix(postfix);
 					variables["ans"] = result;
 					cout << "ans =  " << result << endl;
@@ -130,7 +131,6 @@ int main() {
 			}
 		}else{
 			if (input == "tree") {
-				cout << "Postfix: " << last_postfix << endl;
 				trees::ABB tree;
 				tree.createPostfixTree(last_postfix);
 				tree.traverse();
