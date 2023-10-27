@@ -1,6 +1,6 @@
 
 ## Compiling with CMake 
-- cd laberinto
+- cd [laberinto / calculadora / sort]
 - mkdir build 
 - cd build
 - cmake .. 
